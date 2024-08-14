@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 
 # Change your executable name to something creative!
-set(NAME pico-boilerplate) # <-- Name your project/executable here!
+set(NAME psram_test) # <-- Name your project/executable here!
+
+#set(PICO_PLATFORM rp2350-riscv)
+set(PICO_PLATFORM rp2350)
 
 include(pico_sdk_import.cmake)
 include(pimoroni_pico_import.cmake)
@@ -17,21 +20,24 @@ pico_sdk_init()
 # Add your source files
 add_executable(${NAME}
     main.cpp # <-- Add source files here!
+    randmem/randmem.c
 )
 
 # Include required libraries
 # This assumes `pimoroni-pico` is stored alongside your project
-include(common/pimoroni_i2c)
-include(common/pimoroni_bus)
-include(libraries/bitmap_fonts/bitmap_fonts)
-include(libraries/hershey_fonts/hershey_fonts)
-include(libraries/pico_explorer/pico_explorer)
+#include(common/pimoroni_i2c)
+#include(common/pimoroni_bus)
+#include(libraries/bitmap_fonts/bitmap_fonts)
+#include(libraries/hershey_fonts/hershey_fonts)
+#include(libraries/pico_explorer/pico_explorer)
 
 # Don't forget to link the libraries you need!
 target_link_libraries(${NAME}
-    pimoroni_i2c
-    pico_explorer # <-- List libraries here!
+    pico_stdlib
 )
+
+pico_enable_stdio_uart(${NAME} 1)
+pico_enable_stdio_usb(${NAME} 0)
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(${NAME})
